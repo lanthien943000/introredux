@@ -31,7 +31,7 @@ const RootComponent = (props) => {
     const newProductList = cart.products.map((cartProduct) => {
       if (cartProduct.id === newProduct.id && cartProduct.price > 0) {
         cartProduct.qty += 1;
-        cartProduct.price += newProduct.price;
+        cartProduct.price = newProduct.price * cartProduct.qty;
       }
       return cartProduct;
     });
@@ -48,10 +48,18 @@ const RootComponent = (props) => {
   const removeProductFromCart = (newProduct) => {
     let newTotalPrice = cart.totalPrice;
     const removeProductList = cart.products.map((cartProduct) => {
+      const minPrice = 0;
       if (cartProduct.id === newProduct.id) {
-        cartProduct.qty -= 1;
-        cartProduct.price -= newProduct.price;
-        newTotalPrice = cartProduct.price;
+        cartProduct.qty =
+          cartProduct.qty > minPrice ? cartProduct.qty - 1 : cartProduct.qty;
+        cartProduct.price =
+          cartProduct.price > minPrice
+            ? (cartProduct.price -= newProduct.price)
+            : cartProduct.price;
+        newTotalPrice =
+          cart.totalPrice > 0
+            ? cart.totalPrice - newProduct.price
+            : cart.totalPrice;
       }
       return cartProduct;
     });
