@@ -99,7 +99,12 @@ const ProductOne = (props) => {
   // Step 4
   // Replace the line below to get data of the first product from state.product
   // You should see the price is updated
-  const product = useSelector((state) => state.product[0]);
+  const productShop = useSelector((state) => state.product[0]);
+  const product = {
+    id: productShop.id,
+    title: productShop.title,
+    price: productShop.price,
+  };
 
   // Step 7
   // Define: const dispatch = useDispatch();
@@ -161,7 +166,14 @@ const ProductTwo = (props) => {
   // Step 5
   // Replace the line below to get data of the second product from state.product
   // You should see the price is updated
-  const product = useSelector((state) => state.product[1]);
+  const productShop = useSelector((state) => state.product[1]);
+
+  const product = {
+    id: productShop.id,
+    title: productShop.title,
+    price: productShop.price,
+  };
+
   const dispatch = useDispatch();
 
   // Step 9
@@ -214,7 +226,11 @@ const CartProductOne = (props) => {
   // Step 2
   // Replace the line below to get data of the first product from state.cart.products
   // Change the price of products in `service/cart/slice.js` to see the effect
-  const product = useSelector((state) => state.cart.products[0]);
+  const productShopping = useSelector((state) => state.cart.products);
+  const product = {
+    price: productShopping[0].price,
+    qty: productShopping[0].qty,
+  };
 
   return (
     <WrapperBox>
@@ -247,7 +263,11 @@ const CartProductTwo = (props) => {
   // Step 3
   // Replace the line below to get data of the second product from state.cart.products
   // Change the price of products in `service/cart/slice.js` to see the effect
-  const product = useSelector((state) => state.cart.products[1]);
+  const productShopping = useSelector((state) => state.cart.products);
+  const product = {
+    price: productShopping[1].price,
+    qty: productShopping[1].qty,
+  };
 
   return (
     <WrapperBox>

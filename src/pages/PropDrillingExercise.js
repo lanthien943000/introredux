@@ -28,16 +28,20 @@ const RootComponent = (props) => {
   // The function will add one new product into the cart
 
   const addProductToCart = (newProduct) => {
-    const newProductList = cart.products.map((cartProduct) => {
-      if (cartProduct.id === newProduct.id && cartProduct.price > 0) {
+    const newCart = { ...cart };
+    const newProductList = newCart.products;
+    newProductList.map((cartProduct) => {
+      if (cartProduct.id === newProduct.id) {
         cartProduct.qty += 1;
         cartProduct.price = newProduct.price * cartProduct.qty;
+      } else {
+        return cartProduct;
       }
       return cartProduct;
     });
 
     const newTotalPrice = cart.totalPrice + newProduct.price;
-    setCart({ products: newProductList, totalPrice: newTotalPrice });
+    setCart({ ...newCart, totalPrice: newTotalPrice });
   };
 
   // Step 2
@@ -46,8 +50,10 @@ const RootComponent = (props) => {
   // The function will remove one product from the cart. The min value of quantity is 0
 
   const removeProductFromCart = (newProduct) => {
-    let newTotalPrice = cart.totalPrice;
-    const removeProductList = cart.products.map((cartProduct) => {
+    const newCart = { ...cart };
+    let newTotalPrice;
+    const removeProductList = newCart.products;
+    removeProductList.map((cartProduct) => {
       const minPrice = 0;
       if (cartProduct.id === newProduct.id) {
         cartProduct.qty =
@@ -60,10 +66,12 @@ const RootComponent = (props) => {
           cart.totalPrice > 0
             ? cart.totalPrice - newProduct.price
             : cart.totalPrice;
+      } else {
+        return cartProduct;
       }
       return cartProduct;
     });
-    setCart({ products: removeProductList, totalPrice: newTotalPrice });
+    setCart({ ...newCart, totalPrice: newTotalPrice });
   };
 
   // Step 3
@@ -96,8 +104,8 @@ const RootComponent = (props) => {
         <Grid item md={6}>
           <ProductPage
             products={products}
-            addProduct={addProductToCart}
-            removeProduct={removeProductFromCart}
+            addProductToCart={addProductToCart}
+            removeProductFromCart={removeProductFromCart}
           />
         </Grid>
         <Grid item md={6}>
@@ -126,15 +134,15 @@ const ProductPage = (props) => {
         <Grid item sm={6}>
           <ProductOne
             product={props.products[0]}
-            addProduct={props.addProduct}
-            removeProduct={props.removeProduct}
+            addProductToCart={props.addProductToCart}
+            removeProductFromCart={props.removeProductFromCart}
           />
         </Grid>
         <Grid item sm={6}>
           <ProductTwo
             product={props.products[1]}
-            addProduct={props.addProduct}
-            removeProduct={props.removeProduct}
+            addProductToCart={props.addProductToCart}
+            removeProductFromCart={props.removeProductFromCart}
           />
         </Grid>
       </Grid>
@@ -199,14 +207,14 @@ const ProductOne = (props) => {
             <Button
               variant="success"
               sx={{ width: "5rem" }}
-              onClick={() => props.addProduct(props.product)}
+              onClick={() => props.addProductToCart(props.product)}
             >
               Add
             </Button>
             <Button
               variant="error"
               sx={{ width: "5rem" }}
-              onClick={() => props.removeProduct(props.product)}
+              onClick={() => props.removeProductFromCart(props.product)}
             >
               Remove
             </Button>
@@ -244,7 +252,7 @@ const ProductTwo = (props) => {
               variant="success"
               size="sm"
               style={{ width: "5rem" }}
-              onClick={() => props.addProduct(props.product)}
+              onClick={() => props.addProductToCart(props.product)}
             >
               Add
             </Button>
@@ -252,7 +260,7 @@ const ProductTwo = (props) => {
               variant="error"
               size="sm"
               style={{ width: "5rem" }}
-              onClick={() => props.removeProduct(props.product)}
+              onClick={() => props.removeProductFromCart(props.product)}
             >
               Remove
             </Button>
